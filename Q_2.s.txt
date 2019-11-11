@@ -1,0 +1,55 @@
+     AREA     appcode, CODE, READONLY
+     EXPORT __main
+     ENTRY 
+__main  FUNCTION	
+; IGNORE THIS PART 	
+	    
+		VMOV.F32 s0,#5;x----in radians
+		MOV R0,#10;n
+		VMOV.F32 s7,#1.0;i
+		VMOV.F32 s1,s0;t
+		VMOV.F32 s2,s0;S2 has answer(sum)
+		VMOV.F32 s6,#-1.0;const
+		VMOV.F32 s8,#2.0;const
+		VMOV.F32 s9,#1.0;const
+loop	VMUL.F32 s3,s1,s6;
+		VMUL.F32 s3,s3,s0;
+		VMUL.F32 s3,s3,s0;(t*(-1)*x*x)
+		VMUL.F32 s4,s7,s8;2*i
+		VADD.F32 s5,s4,s9;2*i+1
+		VMUL.F32 s4,s4,s5;(2*i*(2*i+1)
+		VDIV.F32 s1,s3,s4;t=(expression)
+		VADD.F32 s2,s2,s1;sum=sum+t
+		VADD.F32 s7,s7,s9;i=i+1
+		SUB R0,R0,#1;
+		CMP R0,#0;
+		BNE loop
+
+		VMOV.F32 s0,#5;x----in radians
+		MOV R0,#10;n
+		VMOV.F32 s7,#1.0;i
+		VMOV.F32 s1,#1.0;t
+		VMOV.F32 s10,#1.0;sum
+		
+loop1	VMUL.F32 s3,s1,s6;
+		VMUL.F32 s3,s3,s0;
+		VMUL.F32 s3,s3,s0;(t*(-1)*x*x)
+		VMUL.F32 s4,s7,s8;2*i
+		VSUB.F32 s5,s4,s9;2*i-1
+		VMUL.F32 s4,s4,s5;(2*i*(2*i-1)
+		VDIV.F32 s1,s3,s4;t=(expression)
+		VADD.F32 s10,s10,s1;sum=sum+t
+		VADD.F32 s7,s7,s9;i=i+1
+		SUB R0,R0,#1;
+		CMP R0,#0;
+		BNE loop1
+		
+		VDIV.F32 s11,s2,s10;tan =sin/cos
+		
+stop B stop ; stop program
+     ENDFUNC
+	 END
+
+
+;N=10:[0.546302,1.55741,14.1014,-2.18504,-0.747022,-0.142547,0.374586,1.15782,4.63734,-3.38049,-0.995556,-0.290941]
+;N=20:[0.546302,1.55741,14.1014,-2.18504,-0.747022,-0.142547,0.374586,1.15782,4.63733,-3.38052,-0.995584,-0.291004]

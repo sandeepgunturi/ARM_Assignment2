@@ -1,0 +1,27 @@
+     AREA     appcode, CODE, READONLY
+     EXPORT __main
+     ENTRY 
+__main  FUNCTION	
+; IGNORE THIS PART 	
+	    
+		VMOV.F32 s0,#10.0;i
+		MOV R0,#10;
+		VMOV.F32 s1,#3.0;x
+		VMOV.F32 s7,#1.0;
+		VMOV.F32 s2,#1.0;S2 has answer(sum)
+		
+		
+loop	VDIV.F32 s3,s2,s0;
+		VMUL.F32 s4,s1,s3;
+		VADD.F32 s2,s4,s7;
+		VSUB.F32 s0,s0,s7;
+		SUB R0,R0,#1;
+		CMP R0,#0;
+		BNE loop
+		
+stop B stop ; stop program
+     ENDFUNC
+	 END
+
+;n=10:[2.71828,7.38899,20.0797,54.4431,146.381,386.234,988.592,2432.12,5720.68,12842.3]
+;n=20:[2.71828,7.38906,20.0855,54.5981,148.413,403.428,1096.62,2980.68,8099.52,21991.5]
